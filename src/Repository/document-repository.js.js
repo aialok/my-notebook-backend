@@ -1,36 +1,36 @@
-const { User } = require("../models/index");
+const { Document } = require("../models/index");
 
-class UserRepository {
-  async createUser(data) {
+class DocumentRepository {
+  async createDocument(data) {
     try {
-      const user = await User.create(data);
-      return user;
+      const document = await Document.create(data);
+      return document;
     } catch (error) {
       console.log("There is error in creating user : Repositoy", error);
       throw { error };
     }
   }
 
-  async getByEmail(userEmail) {
+  async getAllDocument(UserId) {
     try {
-      const user = await User.findOne({
+      const document = await Document.findAll({
         where: {
-          email: userEmail,
+          user_id: UserId,
         },
       });
 
-      return user;
+      return document;
     } catch (error) {
       console.log("Something went wrong on the repository layer", error);
       throw error;
     }
   }
 
-  async deleteUser(UserId) {
+  async deleteDocument(documentId) {
     try {
-      const response = await User.destroy({
+      const response = await Document.destroy({
         where: {
-          id: UserId,
+          id: documentId,
         },
       });
 
@@ -41,9 +41,13 @@ class UserRepository {
     }
   }
 
-  async updateUser(data) {
+  async updateDocument(DocsId, data) {
     try {
-      const response = await User.update(data);
+      const response = await Document.update(data, {
+        where: {
+          id: DocsId,
+        },
+      });
       return response;
     } catch (error) {
       console.log("There is error in updating user : Repositoy");
@@ -51,10 +55,10 @@ class UserRepository {
     }
   }
 
-  async getUser(UserId) {
+  async getDocumentById(documentId) {
     try {
-      const user = await User.findByPk(UserId);
-      return user;
+      const document = await documentId.findByPk(documentId);
+      return document;
     } catch (error) {
       console.log("There is error in getting user : Repositoy");
       throw { error };
@@ -62,4 +66,4 @@ class UserRepository {
   }
 }
 
-module.exports = UserRepository;
+module.exports = DocumentRepository;
